@@ -31,3 +31,7 @@
 .CurWordRow.red .cell {
   border-color: red;
 }
+
+h1 {
+    font-size: 46px;
+}

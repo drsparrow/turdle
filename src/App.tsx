@@ -30,6 +30,7 @@ class Game extends React.Component<{}, GameState> {
   render () {
     return (
       <div className="Game">
+        <h1>TURDLE</h1>
         <div className="board">
           {this.renderPrevWordRows()}
           {this.renderCurWordRow()}
@@ -89,7 +90,7 @@ class Game extends React.Component<{}, GameState> {
 
   private addLetter(event: KeyboardEvent) {
     if (this.state.curGuess.length >= WORD_LENGTH) return;
-    this.setState(state => ({ curGuess: state.curGuess + event.key }));
+    this.setState(state => ({ curGuess: state.curGuess + event.key.toLowerCase() }));
   }
 
   private addWord() {
