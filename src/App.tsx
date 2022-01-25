@@ -64,10 +64,7 @@ class Game extends React.Component<GameProps, GameState> {
           {this.renderNextWordRows()}
           {this.renderFinalWord()}
         </div>
-        <Keyboard
-          word={this.word}
-          guesses={this.state.guesses}
-          handleCharPress={this.addLetter.bind(this)}/>
+        {this.renderKeyboard()}
       </div>
     );
   }
@@ -139,6 +136,15 @@ class Game extends React.Component<GameProps, GameState> {
       :
       ''
       ;
+  }
+
+  private renderKeyboard() {
+    return <Keyboard
+      word={this.word}
+      guesses={this.state.guesses}
+      handleCharPress={this.addLetter.bind(this)}
+      handleDelPress={this.deleteLetter.bind(this)}
+      handleEnterPress={this.addWord.bind(this)} />
   }
 
   componentDidMount() {

@@ -9,6 +9,8 @@
   line-height: 32px;
   border-radius: 3px;
   background: lightgray;
+  cursor: pointer;
+  user-select: none;
 }
 
 .KeyboardKey.yellow {
@@ -21,4 +23,9 @@
 
 .KeyboardKey.green {
     background: green;
+}
+
+.KeyboardKey.enter, .KeyboardKey.delete {
+    width: 40px;
+    line-height: 32px;
 }

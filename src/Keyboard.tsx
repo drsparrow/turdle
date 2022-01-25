@@ -6,6 +6,8 @@ interface KeyboardProps {
     word: string,
     guesses: string[],
     handleCharPress: (key: string) => void,
+    handleDelPress: () => void,
+    handleEnterPress: () => void,
 };
 export class Keyboard extends React.Component <KeyboardProps, {}> {
     render() {
@@ -19,9 +21,27 @@ export class Keyboard extends React.Component <KeyboardProps, {}> {
                 {'asdfghjkl'.split('').map(k => this.keyboardKey(k, colorMap[k]))}
             </div>
             <div>
+                {this.enterKey()}
                 {'zxcvbnm'.split('').map(k => this.keyboardKey(k, colorMap[k]))}
+                {this.delKey()}
             </div>
         </div>
+    }
+
+    enterKey() {
+        return <span
+            className="KeyboardKey enter"
+            onClick={this.props.handleEnterPress}>
+            ↵
+        </span>
+    }
+
+    delKey() {
+        return <span
+            className="KeyboardKey delete"
+            onClick={this.props.handleDelPress}>
+            ⌫
+        </span>
     }
 
     keyboardKey(char: string, color: Color) {
