@@ -2,7 +2,11 @@ import React from "react";
 import { Color, ColorHelper } from "./colorHelper";
 import './Keyboard.css';
 
-interface KeyboardProps {word: string, guesses: string[]};
+interface KeyboardProps {
+    word: string,
+    guesses: string[],
+    handleCharPress: (key: string) => void,
+};
 export class Keyboard extends React.Component <KeyboardProps, {}> {
     render() {
         const {guesses, word} = this.props;
@@ -21,7 +25,10 @@ export class Keyboard extends React.Component <KeyboardProps, {}> {
     }
 
     keyboardKey(char: string, color: Color) {
-        return <span className={`KeyboardKey ${color}`} key={char}>
+        return <span
+            className={`KeyboardKey ${color}`}
+            key={char}
+            onClick={() => this.props.handleCharPress(char)}>
             {char}
         </span>
     }

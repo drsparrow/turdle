@@ -64,7 +64,10 @@ class Game extends React.Component<GameProps, GameState> {
           {this.renderNextWordRows()}
           {this.renderFinalWord()}
         </div>
-        <Keyboard word={this.word} guesses={this.state.guesses}/>
+        <Keyboard
+          word={this.word}
+          guesses={this.state.guesses}
+          handleCharPress={this.addLetter.bind(this)}/>
       </div>
     );
   }
@@ -152,7 +155,7 @@ class Game extends React.Component<GameProps, GameState> {
     if(this.isOver()) return;
 
     if (event.keyCode >= 65 && event.keyCode <= 90) {
-      this.addLetter(event);
+      this.addLetter(event.key);
     } else if (event.keyCode === 13) { // 'Enter' key
       this.addWord();
     } else if (event.keyCode === 8) { // 'Backspace' key
@@ -161,9 +164,9 @@ class Game extends React.Component<GameProps, GameState> {
 
   }
 
-  private addLetter(event: KeyboardEvent) {
+  private addLetter(key: string) {
     if (this.state.curGuess.length >= WORD_LENGTH) return;
-    this.setState(state => ({ curGuess: state.curGuess + event.key.toLowerCase() }));
+    this.setState(state => ({ curGuess: state.curGuess + key.charAt(0).toLowerCase() }));
 
     return false;
   }
