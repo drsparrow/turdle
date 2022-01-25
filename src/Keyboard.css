@@ -1,3 +1,7 @@
+.Keyboard {
+    margin-bottom: 20px;
+}
+
 .KeyboardKey {
   margin: 1px;
   width: 32px;
