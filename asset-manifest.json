@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/turdle/static/css/main.d1ca2669.css",
-    "main.js": "/turdle/static/js/main.6bd1780d.js",
+    "main.css": "/turdle/static/css/main.0722c3c8.css",
+    "main.js": "/turdle/static/js/main.57f8abdb.js",
     "static/js/787.28cb0dcd.chunk.js": "/turdle/static/js/787.28cb0dcd.chunk.js",
     "index.html": "/turdle/index.html",
-    "main.d1ca2669.css.map": "/turdle/static/css/main.d1ca2669.css.map",
-    "main.6bd1780d.js.map": "/turdle/static/js/main.6bd1780d.js.map",
+    "main.0722c3c8.css.map": "/turdle/static/css/main.0722c3c8.css.map",
+    "main.57f8abdb.js.map": "/turdle/static/js/main.57f8abdb.js.map",
     "787.28cb0dcd.chunk.js.map": "/turdle/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d1ca2669.css",
-    "static/js/main.6bd1780d.js"
+    "static/css/main.0722c3c8.css",
+    "static/js/main.57f8abdb.js"
   ]
 }
