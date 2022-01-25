@@ -3,6 +3,7 @@ import './App.css';
 import { NUM_GUESSES, WORD_LENGTH } from './constants';
 import { CurWordRow } from './CurWordRow';
 import { blankArray } from './helpers';
+import { Keyboard } from './Keyboard';
 import { NextWordRow } from './NextWordRow';
 import { PrevWordRow } from './PrevWordRow';
 import { WORDS, WORD_SET } from './words';
@@ -33,8 +34,9 @@ class Game extends React.Component<{}, GameState> {
           {this.renderPrevWordRows()}
           {this.renderCurWordRow()}
           {this.renderNextWordRows()}
+          {this.isOver() ? this.word : ''}
         </div>
-        {this.isOver() ? this.word : ''}
+        <Keyboard word={this.word} guesses={this.state.guesses}/>
       </div>
     );
   }
@@ -55,8 +57,8 @@ class Game extends React.Component<{}, GameState> {
   }
 
   private renderNextWordRows () {
-    if (this.isOver()) { return null }
     const numRows = NUM_GUESSES - 1 - this.state.guesses.length;
+    if(numRows <= 0) return;
     return blankArray(numRows).map((_, i) =>
       <NextWordRow key={i}/>
     );

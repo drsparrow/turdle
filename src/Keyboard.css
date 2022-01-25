@@ -1,0 +1,24 @@
+.KeyboardKey {
+  margin: 1px;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  text-align: center;
+  font-size: 20px;
+  text-transform: capitalize;
+  line-height: 32px;
+  border-radius: 3px;
+  background: lightgray;
+}
+
+.KeyboardKey.yellow {
+    background: yellow;
+}
+
+.KeyboardKey.gray {
+    background: gray;
+}
+
+.KeyboardKey.green {
+    background: green;
+}

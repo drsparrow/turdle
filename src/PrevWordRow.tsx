@@ -1,4 +1,5 @@
 import React from 'react';
+import { ColorHelper } from './colorHelper';
 
 interface PrevWordRowProps { guess: string, word: string }
 export class PrevWordRow extends React.Component<PrevWordRowProps, {}> {
@@ -13,13 +14,6 @@ export class PrevWordRow extends React.Component<PrevWordRowProps, {}> {
     }
 
     private color(letter: string, letterIdx: number) {
-        const { word } = this.props;
-        if (word.charAt(letterIdx) == letter) {
-            return 'green';
-        } else if (word.includes(letter)) {
-            return 'yellow';
-        } else {
-            return 'gray';
-        }
+        return new ColorHelper(this.props.word).color(letter, letterIdx);
     }
 }
