@@ -9,7 +9,14 @@ import { PrevWordRow } from './PrevWordRow';
 import { WORDS, WORD_SET } from './words';
 
 function App() {
-  return <Game />
+  const index = Number(document.location.hash.split('#')[1]);
+  if (index >= 0 && index < WORDS.length) {
+    return <Game wordIndex={index}/>
+  } else {
+    // evil/lazy
+    setGame(0);
+    return null;;
+  }
 }
 
 interface GameState {
@@ -18,8 +25,7 @@ interface GameState {
   isWrongGuess: boolean;
 }
 
-class Game extends React.Component<{}, GameState> {
-  word: string = getRandomWord();
+class Game extends React.Component<{wordIndex: number}, GameState> {
 
   state: GameState = {
     guesses: [],
@@ -32,6 +38,7 @@ class Game extends React.Component<{}, GameState> {
       <div className="Game">
         <h1>TURDLE</h1>
         <div className="board">
+          {this.renderControls()}
           {this.renderPrevWordRows()}
           {this.renderCurWordRow()}
           {this.renderNextWordRows()}
@@ -67,6 +74,17 @@ class Game extends React.Component<{}, GameState> {
     );
   }
 
+  private renderControls() {
+    const prev = (this.props.wordIndex - 1) % WORDS.length + WORDS.length;
+    const next = (this.props.wordIndex + 1) % WORDS.length;
+
+    return <div>
+      <button onClick={() => setGame(prev)}>Prev</button>
+      #{this.props.wordIndex}
+      <button onClick={() => setGame(next)}>Next</button>
+    </div>
+  }
+
   private isOver(): boolean {
     const {guesses} = this.state;
     if (!guesses) return false;
@@ -75,9 +93,14 @@ class Game extends React.Component<{}, GameState> {
 
   private renderFinalWord() {
     return this.isOver() ?
-      <span className="final-word">{this.word}</span>
+      <a className="final-word"
+        href={`https://www.dictionary.com/browse/${this.word}`}
+        target="_blank">
+        {this.word}
+      </a>
       :
-      '';
+      ''
+      ;
   }
 
   componentDidMount() {
@@ -122,14 +145,24 @@ class Game extends React.Component<{}, GameState> {
       isWrongGuess: false,
     }));
   }
+
+  private get word() {
+    return WORDS[this.props.wordIndex];
+  }
 }
 
-function getRandomWord(): string {
-  return WORDS[Math.floor(Math.random() * WORDS.length)];
-}
+// function getRandomWord(): string {
+//   return WORDS[Math.floor(Math.random() * WORDS.length)];
+// }
 
 function isRealWord(word: string): boolean {
   return WORD_SET.has(word);
+}
+
+function setGame(index: number) {
+  // evil/lazy:
+  document.location.hash = String(index);
+  document.location.reload();
 }
 
 
