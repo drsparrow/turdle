@@ -8,14 +8,30 @@ import { NextWordRow } from './NextWordRow';
 import { PrevWordRow } from './PrevWordRow';
 import { WORDS, WORD_SET } from './words';
 
-function App() {
-  const index = Number(document.location.hash.split('#')[1]);
-  if (index >= 0 && index < WORDS.length) {
-    return <Game wordIndex={index}/>
-  } else {
-    // evil/lazy
-    setGame(0);
-    return null;;
+class App extends React.Component<{}, {wordIndex: number}> {
+
+  state = {wordIndex: this.getIndexFromHash()}
+
+  render() {
+    const {wordIndex} = this.state;
+    if (wordIndex >= 0 && wordIndex < WORDS.length) {
+      return <Game wordIndex={wordIndex}/>
+    } else {
+      // evil/lazy
+      setGame(randomIndex());
+      return null;
+    }
+  }
+
+  componentDidMount() {
+    window.onhashchange = (() => {
+      this.setState({wordIndex: this.getIndexFromHash()});
+      document.body.blur();
+    });
+  }
+
+  private getIndexFromHash(): number {
+    return Number(document.location.hash.split('#')[1]);
   }
 }
 
@@ -25,13 +41,17 @@ interface GameState {
   isWrongGuess: boolean;
 }
 
-class Game extends React.Component<{wordIndex: number}, GameState> {
+interface GameProps { wordIndex: number }
 
-  state: GameState = {
-    guesses: [],
-    curGuess: "",
-    isWrongGuess: false,
-  };
+const INIT_STATE: GameState = {
+  guesses: [],
+  curGuess: "",
+  isWrongGuess: false,
+};
+
+class Game extends React.Component<GameProps, GameState> {
+
+  state = INIT_STATE;
 
   render () {
     return (
@@ -75,13 +95,27 @@ class Game extends React.Component<{wordIndex: number}, GameState> {
   }
 
   private renderControls() {
-    const prev = (this.props.wordIndex - 1) % WORDS.length + WORDS.length;
+    const prev = ((this.props.wordIndex || WORDS.length) - 1) % WORDS.length;
     const next = (this.props.wordIndex + 1) % WORDS.length;
+    const random = randomIndex();
 
     return <div>
-      <button onClick={() => setGame(prev)}>Prev</button>
-      #{this.props.wordIndex}
-      <button onClick={() => setGame(next)}>Next</button>
+      <div>#{this.props.wordIndex}</div>
+      <button className="new-game-button"
+        disabled={!this.isOver()}
+        onClick={() => setGame(prev)}>
+          Prev
+      </button>
+      <button className="new-game-button"
+        disabled={!this.isOver()}
+        onClick={() => setGame(random)}>
+        Random
+      </button>
+      <button className="new-game-button"
+        disabled={!this.isOver()}
+        onClick={() => setGame(next)}>
+        Next
+      </button>
     </div>
   }
 
@@ -107,6 +141,12 @@ class Game extends React.Component<{wordIndex: number}, GameState> {
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
+  componentWillReceiveProps(newProps: GameProps) {
+    if(newProps.wordIndex !== this.props.wordIndex) {
+      this.setState(INIT_STATE);
+    }
+  }
+
   private handleKeyDown(event: KeyboardEvent) {
     if(this.isOver()) return;
 
@@ -123,6 +163,8 @@ class Game extends React.Component<{wordIndex: number}, GameState> {
   private addLetter(event: KeyboardEvent) {
     if (this.state.curGuess.length >= WORD_LENGTH) return;
     this.setState(state => ({ curGuess: state.curGuess + event.key.toLowerCase() }));
+
+    return false;
   }
 
   private addWord() {
@@ -151,18 +193,17 @@ class Game extends React.Component<{wordIndex: number}, GameState> {
   }
 }
 
-// function getRandomWord(): string {
-//   return WORDS[Math.floor(Math.random() * WORDS.length)];
-// }
-
 function isRealWord(word: string): boolean {
   return WORD_SET.has(word);
+}
+
+function randomIndex(): number {
+  return Math.floor(Math.random() * WORDS.length);
 }
 
 function setGame(index: number) {
   // evil/lazy:
   document.location.hash = String(index);
-  document.location.reload();
 }
 
 

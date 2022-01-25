@@ -40,3 +40,7 @@ h1 {
 .final-word {
   font-size: 36px;
 }
+
+.new-game-button {
+  margin: 3px;
+}
