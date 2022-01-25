@@ -1,9 +1,9 @@
 export type Color = 'green'|'yellow'|'gray';
 
 const COLOR_MAP: {[number: number]: Color} = {
-    [1]: 'gray',
-    [2]: 'yellow',
-    [3]: 'green',
+    1: 'gray',
+    2: 'yellow',
+    3: 'green',
 }
 export class ColorHelper {
     constructor(private word: string) {}
@@ -28,7 +28,7 @@ export class ColorHelper {
     }
 
     private colorValue(letter: string, letterIdx: number): number {
-        if (this.word.charAt(letterIdx) == letter) {
+        if (this.word.charAt(letterIdx) === letter) {
             return 3;
         } else if (this.word.includes(letter)) {
             return 2;

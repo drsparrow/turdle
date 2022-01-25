@@ -68,7 +68,7 @@ class Game extends React.Component<{}, GameState> {
   private isOver(): boolean {
     const {guesses} = this.state;
     if (!guesses) return false;
-    return guesses.length >= NUM_GUESSES || guesses[guesses.length-1] == this.word; ;
+    return guesses.length >= NUM_GUESSES || guesses[guesses.length-1] === this.word; ;
   }
 
   componentDidMount() {
@@ -80,9 +80,9 @@ class Game extends React.Component<{}, GameState> {
 
     if (event.keyCode >= 65 && event.keyCode <= 90) {
       this.addLetter(event);
-    } else if (event.keyCode == 13) { // 'Enter' key
+    } else if (event.keyCode === 13) { // 'Enter' key
       this.addWord();
-    } else if (event.keyCode == 8) { // 'Backspace' key
+    } else if (event.keyCode === 8) { // 'Backspace' key
       this.deleteLetter();
     }
 
