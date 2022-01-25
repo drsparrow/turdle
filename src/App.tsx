@@ -35,7 +35,7 @@ class Game extends React.Component<{}, GameState> {
           {this.renderPrevWordRows()}
           {this.renderCurWordRow()}
           {this.renderNextWordRows()}
-          {this.isOver() ? this.word : ''}
+          {this.renderFinalWord()}
         </div>
         <Keyboard word={this.word} guesses={this.state.guesses}/>
       </div>
@@ -58,7 +58,9 @@ class Game extends React.Component<{}, GameState> {
   }
 
   private renderNextWordRows () {
-    const numRows = NUM_GUESSES - 1 - this.state.guesses.length;
+    const numRows = this.isOver() ?
+      NUM_GUESSES - this.state.guesses.length :
+      NUM_GUESSES - this.state.guesses.length - 1;
     if(numRows <= 0) return;
     return blankArray(numRows).map((_, i) =>
       <NextWordRow key={i}/>
@@ -69,6 +71,13 @@ class Game extends React.Component<{}, GameState> {
     const {guesses} = this.state;
     if (!guesses) return false;
     return guesses.length >= NUM_GUESSES || guesses[guesses.length-1] === this.word; ;
+  }
+
+  private renderFinalWord() {
+    return this.isOver() ?
+      <span className="final-word">{this.word}</span>
+      :
+      '';
   }
 
   componentDidMount() {
