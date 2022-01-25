@@ -129,7 +129,8 @@ class Game extends React.Component<GameProps, GameState> {
     return this.isOver() ?
       <a className="final-word"
         href={`https://www.dictionary.com/browse/${this.word}`}
-        target="_blank">
+        target="_blank"
+        rel="noreferrer">
         {this.word}
       </a>
       :
