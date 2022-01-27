@@ -8,9 +8,13 @@ import { NextWordRow } from './NextWordRow';
 import { PrevWordRow } from './PrevWordRow';
 import { WORDS, WORD_SET } from './words';
 
+function getIndexFromHash(): number {
+  return Number(document.location.hash.split('#')[1]);
+}
+
 class App extends React.Component<{}, {wordIndex: number}> {
 
-  state = {wordIndex: this.getIndexFromHash()}
+  state = {wordIndex: getIndexFromHash()}
 
   render() {
     const {wordIndex} = this.state;
@@ -25,13 +29,9 @@ class App extends React.Component<{}, {wordIndex: number}> {
 
   componentDidMount() {
     window.onhashchange = (() => {
-      this.setState({wordIndex: this.getIndexFromHash()});
+      this.setState({wordIndex: getIndexFromHash()});
       document.body.blur();
     });
-  }
-
-  private getIndexFromHash(): number {
-    return Number(document.location.hash.split('#')[1]);
   }
 }
 
@@ -43,15 +43,9 @@ interface GameState {
 
 interface GameProps { wordIndex: number }
 
-const INIT_STATE: GameState = {
-  guesses: [],
-  curGuess: "",
-  isWrongGuess: false,
-};
-
 class Game extends React.Component<GameProps, GameState> {
 
-  state = INIT_STATE;
+  state = Game.getInitState();
 
   render () {
     return (
@@ -67,6 +61,15 @@ class Game extends React.Component<GameProps, GameState> {
         {this.renderKeyboard()}
       </div>
     );
+  }
+
+  private static getInitState(): GameState {
+    const stored = localStorage.getItem(String(getIndexFromHash()));
+    return {
+      guesses: stored ? JSON.parse(stored) as string[] : [],
+      curGuess: "",
+      isWrongGuess: false,
+    }
   }
 
   private renderPrevWordRows () {
@@ -153,7 +156,7 @@ class Game extends React.Component<GameProps, GameState> {
 
   componentWillReceiveProps(newProps: GameProps) {
     if(newProps.wordIndex !== this.props.wordIndex) {
-      this.setState(INIT_STATE);
+      this.setState(Game.getInitState());
     }
   }
 
@@ -185,6 +188,11 @@ class Game extends React.Component<GameProps, GameState> {
       this.setState({
         curGuess: '',
         guesses: guesses.concat([curGuess]),
+      }, () => {
+        localStorage.setItem(
+          String(this.props.wordIndex),
+          JSON.stringify(this.state.guesses)
+        );
       });
     } else {
       this.setState({isWrongGuess: true});
