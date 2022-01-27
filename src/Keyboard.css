@@ -4,13 +4,13 @@
 
 .KeyboardKey {
   margin: 1px;
-  width: 32px;
-  height: 32px;
+  width: 33px;
+  height: 33px;
   display: inline-block;
   text-align: center;
   font-size: 20px;
   text-transform: capitalize;
-  line-height: 32px;
+  line-height: 33px;
   border-radius: 3px;
   background: lightgray;
   cursor: pointer;
@@ -31,5 +31,5 @@
 
 .KeyboardKey.enter, .KeyboardKey.delete {
     width: 40px;
-    line-height: 32px;
+    line-height: 33px;
 }
